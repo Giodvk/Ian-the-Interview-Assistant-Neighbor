@@ -1,0 +1,13 @@
+training:
+  epochs: 3
+  learning_rate: 0.0002
+  batch_size: 4
+  gradient_accumulation_steps: 4
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - v_proj

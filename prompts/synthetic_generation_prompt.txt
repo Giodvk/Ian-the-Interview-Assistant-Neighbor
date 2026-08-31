@@ -1,0 +1,15 @@
+Given the following interview question and ideal answer,
+generate a realistic candidate response.
+
+Then provide:
+1. constructive feedback on the candidate response;
+2. one contextual follow-up question.
+
+Role:
+{role}
+
+Interview question:
+{question}
+
+Ideal answer:
+{ideal_answer}
