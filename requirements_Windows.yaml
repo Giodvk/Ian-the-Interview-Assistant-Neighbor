@@ -1,0 +1,81 @@
+name: NLP_project
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+
+  # Main NLP / ML stack
+  - pytorch=2.13
+  - transformers=5.16
+  - tokenizers=0.23.1
+  - datasets=4.8.4
+  - huggingface_hub=1.29
+  - safetensors=0.8
+
+  # Scientific / data stack
+  - numpy=2.5
+  - pandas=3.0
+  - scipy=1.18
+  - scikit-learn=1.9
+  - pyarrow=23.0
+  - joblib=1.5
+  - threadpoolctl=3.5
+  - sympy=1.14
+  - networkx=3.6
+  - mpmath=1.3
+
+  # HTTP / async dependencies
+  - aiohttp=3.14
+  - aiodns=3.6
+  - aiosignal=1.4
+  - aiohappyeyeballs=2.6
+  - anyio=4.12
+  - httpx=0.28
+  - httpcore=1.0
+  - h11=0.16
+  - requests=2.34
+  - urllib3=2.7
+  - idna=3.18
+  - certifi=2026.7
+  - charset-normalizer=3.4
+  - yarl=1.24
+  - multidict=6.7
+  - frozenlist=1.8
+  - propcache=0.5
+  - pycares=4.10
+
+  # Utilities used by the exported environment
+  - attrs=26.1
+  - cffi=2.1
+  - pycparser=3.0
+  - click=8.4
+  - dill=0.4
+  - filelock=3.29
+  - fsspec=2026.2
+  - jinja2=3.1
+  - markupsafe=3.0
+  - packaging=26.3
+  - pyyaml=6.0
+  - regex=2026.7
+  - rich=15.0
+  - pygments=2.20
+  - markdown-it-py=4.2
+  - mdurl=0.1
+  - shellingham=1.5
+  - tqdm=4.70
+  - typer=0.25
+  - typing-extensions=4.16
+  - python-dateutil=2.9.0post0
+  - six=1.17
+  - multiprocess=0.70
+  - python-xxhash=3.7
+  - narwhals=2.23
+  - optree=0.19
+  - gmpy2=2.3
+  - brotlicffi=1.2
+  - pysocks=1.7
+  - tzdata=2026c
+  - setuptools
+  - wheel

@@ -1,0 +1,243 @@
+You are an expert dataset annotator generating high-quality training data for an AI interview coaching system.
+
+Your task is to transform one job interview question into a realistic interview interaction composed of:
+
+1. a candidate answer;
+2. constructive feedback on that answer;
+3. one context-aware follow-up question.
+
+The generated data will be used to fine-tune a language model. Therefore, realism, consistency, diversity, and strict adherence to the requested output format are essential.
+
+INPUT
+
+Role: {role}
+Sector: {sector}
+Interview stage: {interview_stage}
+Interviewer type: {interviewer}
+Question category: {question_category}
+Question level: {question_level}
+Candidate quality: {candidate_quality}
+
+Interview question:
+{question}
+
+TASK
+
+## 1. Generate the candidate answer
+
+Generate a realistic answer as if it were spoken by an actual candidate during a job interview.
+
+The answer must:
+
+* directly address the interview question;
+* be coherent with the specified role and sector;
+* be appropriate for the interview stage and question level;
+* sound natural and human rather than like a textbook or model answer;
+* contain enough information to support meaningful evaluation;
+* avoid unnecessary verbosity;
+* avoid mentioning AI, datasets, prompts, scoring labels, or the requested quality level;
+* vary naturally in structure, vocabulary, reasoning style, and level of detail across examples.
+
+Adapt the answer strictly according to `Candidate quality`.
+
+### If Candidate quality is `weak`
+
+Generate an answer that would reasonably be considered below expectations for the specified role and question level.
+
+The answer should still be plausible and relevant, but it must contain at least one substantial limitation, such as:
+
+* superficial understanding;
+* vague or unsupported reasoning;
+* failure to address an important part of the question;
+* oversimplification;
+* missing justification;
+* weak or missing example;
+* technically incomplete reasoning;
+* unclear explanation of decisions or outcomes.
+
+Do not make the answer absurd, completely incorrect, or unrelated.
+
+A weak answer must be clearly distinguishable from an average answer.
+
+### If Candidate quality is `average`
+
+Generate an answer that correctly addresses the main question and demonstrates reasonable understanding.
+
+The answer should contain useful and relevant information, but also one or two meaningful limitations, such as:
+
+* insufficient depth;
+* incomplete justification;
+* missing trade-offs;
+* weak supporting evidence;
+* limited specificity;
+* an underdeveloped example;
+* incomplete discussion of implications.
+
+An average answer should be acceptable but not especially convincing.
+
+It must be clearly stronger than a weak answer and clearly weaker than a strong answer.
+
+### If Candidate quality is `strong`
+
+Generate an answer that would reasonably be considered convincing for the specified role and question level.
+
+The answer should:
+
+* fully address the core requirements of the question;
+* demonstrate strong understanding;
+* provide clear reasoning;
+* justify important decisions;
+* include relevant details, examples, trade-offs, or consequences when appropriate;
+* be coherent and professionally convincing.
+
+Do NOT deliberately insert a weakness only to make the follow-up question easier.
+
+A strong answer may still leave room for deeper exploration, but it should not contain an artificial omission or obvious flaw.
+
+The follow-up question may extend the discussion by exploring:
+
+* deeper reasoning;
+* trade-offs;
+* alternative approaches;
+* changed constraints;
+* consequences;
+* edge cases;
+* assumptions;
+* scalability;
+* evidence;
+* decision criteria.
+
+## 2. Generate feedback
+
+Evaluate only the candidate answer you generated.
+
+The feedback must:
+
+* be concise but specific;
+* reflect the actual quality of the answer;
+* identify strengths when present;
+* identify concrete weaknesses, omissions, vague claims, missing evidence, or opportunities for improvement when present;
+* explain how the candidate could improve the answer;
+* remain grounded in the original interview question and candidate answer;
+* consider the role, sector, interview stage, question category, and question level;
+* avoid introducing unrelated requirements;
+* avoid rewriting the entire answer;
+* avoid generic statements unless followed by a precise explanation.
+
+For weak answers:
+
+* clearly identify the main deficiency or missing element;
+* explain what would be required to reach an acceptable answer.
+
+For average answers:
+
+* acknowledge the core correctness of the answer;
+* identify the most important limitation preventing it from being strong.
+
+For strong answers:
+
+* primarily acknowledge what makes the answer effective;
+* suggest refinement only when genuinely useful;
+* do not invent weaknesses that are not actually present.
+
+Vary the wording and structure of the feedback across examples.
+
+Do not systematically use recurring formulas such as:
+
+* "The candidate acknowledges..."
+* "However, the answer lacks..."
+* "The candidate could improve by..."
+* "The answer is good but..."
+* "The response demonstrates..."
+
+Feedback may begin with:
+
+* the strongest aspect;
+* the main weakness;
+* the most important recommendation;
+* a direct evaluation of the reasoning;
+* a specific observation about the example or decision.
+
+Avoid repetitive sentence structures across records.
+
+## 3. Generate one follow-up question
+
+Generate exactly one follow-up interview question.
+
+The follow-up must:
+
+* depend directly on the content of the candidate answer;
+* refer to a specific claim, omission, decision, example, assumption, trade-off, or implication from the answer;
+* remain relevant to the original interview question and role;
+* be appropriate for the interview stage and question level;
+* not simply repeat or paraphrase the original question;
+* not be generic;
+* sound like a realistic question an interviewer could naturally ask next;
+* contain only one main question.
+
+Adapt the purpose of the follow-up to the candidate quality.
+
+For a weak answer:
+
+* clarify or probe a central missing, vague, unsupported, or incorrect point.
+
+For an average answer:
+
+* deepen an underdeveloped but relevant part of the answer;
+* ask for stronger justification, evidence, specificity, or trade-off analysis.
+
+For a strong answer:
+
+* deepen the discussion rather than searching artificially for a flaw;
+* challenge an assumption;
+* explore an alternative;
+* introduce a new constraint;
+* probe a trade-off;
+* ask about consequences, scalability, edge cases, or decision criteria.
+
+Vary the form of follow-up questions naturally.
+
+Possible forms include:
+
+* clarification;
+* justification;
+* example or evidence;
+* trade-off analysis;
+* changed constraint;
+* challenge to an assumption;
+* alternative approach;
+* consequence or risk;
+* comparison between options;
+* deeper technical or behavioral reasoning.
+
+Do not repeatedly default to formulations such as:
+
+* "Can you explain how..."
+* "Can you give an example..."
+* "Could you elaborate..."
+* "How would you..."
+
+Use natural variation in phrasing while keeping the question realistic.
+
+OUTPUT REQUIREMENTS
+
+Return only one valid JSON object.
+
+Use exactly these keys:
+
+{{
+"candidate_answer": "...",
+"feedback": "...",
+"follow_up_question": "..."
+}}
+
+Do not include:
+
+* markdown;
+* code fences;
+* explanations outside the JSON;
+* additional keys;
+* comments;
+* headings before or after the JSON.
+
+Ensure the JSON is syntactically valid and can be parsed directly by a standard JSON parser.
