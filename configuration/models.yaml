@@ -3,9 +3,40 @@ teacher:
   model: Qwen/Qwen3-4B
 
 student:
-  model_name: Qwen/Qwen2.5-3B-Instruct
-  max_length: 2048
-  dtype: bfloat16
+  provider: huggingface
+  model: google/gemma-4-E2B-it
+
+training:
+  output_dir: outputs/gemma4-e2b-interview-qlora
+  seed: 42
+
+  epochs: 2
+  learning_rate: 0.0002
+
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 8
+
+  max_length: 1024
+
+  logging_steps: 10
+  eval_steps: 100
+  save_steps: 100
+
+  warmup_ratio: 0.05
+  weight_decay: 0.01
+
+qlora:
+  load_in_4bit: true
+  quant_type: nf4
+  double_quant: true
+  compute_dtype: bfloat16
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+
 
 embedding:
   model_name: sentence-transformers/all-MiniLM-L6-v2
