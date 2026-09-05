@@ -5,6 +5,8 @@ teacher:
 student:
   provider: huggingface
   model: google/gemma-4-E2B-it
+  adapter: ../src/outputs/gemma4-e2b-interview-qlora/final_adapter
+
 
 training:
   output_dir: outputs/gemma4-e2b-interview-qlora
@@ -36,6 +38,21 @@ lora:
   r: 16
   alpha: 32
   dropout: 0.05
+
+inference:
+  max_new_tokens: 500
+  batch_size: 4
+
+  few_shot_dataset: '../data/processed/interview_forge_labeled.csv'
+
+  prompts:
+      minimal: ../prompts/baseline_minimal.txt
+      engineered: ../prompts/few_shot_prompting.txt
+
+  output_dir: outputs/predictions
+
+
+
 
 
 embedding:

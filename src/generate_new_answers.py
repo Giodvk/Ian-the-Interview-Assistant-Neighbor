@@ -8,6 +8,7 @@ import torch
 import yaml
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from utilities_function import load_configuration, load_prompt
 
 
 REQUIRED_OUTPUT_FIELDS = {
@@ -91,16 +92,6 @@ def sample_dataset(
         distribution_comparison[column] = comparison
 
     return sampled_df, distribution_comparison
-
-
-def load_yaml(path: str) -> dict:
-    with open(path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
-
-
-def load_prompt(path: str) -> str:
-    with open(path, "r", encoding="utf-8") as f:
-        return f.read()
 
 
 def assign_candidate_quality(
@@ -327,7 +318,7 @@ def generate_dataset(
     limit: int | None = None,
 ):
 
-    config = load_yaml(config_path)
+    config = load_configuration(config_path)
     prompt_template = load_prompt(prompt_path)
 
     teacher_config = config["teacher"]

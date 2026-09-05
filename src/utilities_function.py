@@ -1,10 +1,7 @@
-import argparse
-from pathlib import Path
+
 import pandas as pd
 import yaml
 from datasets import Dataset
-
-
 
 
 REQUIRED_COLUMNS = [
@@ -16,7 +13,12 @@ REQUIRED_COLUMNS = [
 ]
 
 
-def load_config(path: str) -> dict:
+def load_prompt(path: str) -> str:
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read()
+
+
+def load_configuration(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
@@ -127,5 +129,67 @@ def prepare_dataset(
     print(f"Test:       {len(test)}")
 
     return train, validation, test
+
+
+def format_few_shot_prompt(prompt_path, dataset_path,
+    test_size: float = 0.1, seed: int = 42):
+    prompt_template = load_prompt(prompt_path)
+
+    dataset = load_and_clean_dataset(dataset_path)
+
+    hf_dataset = Dataset.from_pandas(
+        dataset,
+        preserve_index=False,)
+
+    split = hf_dataset.train_test_split(
+        test_size=test_size,
+        seed=seed)
+
+    train_set = split["train"]
+
+    weak_examples = train_set.filter(
+        lambda x: x["candidate_quality"] == "weak"
+    )
+
+    average_examples = train_set.filter(
+        lambda x: x["candidate_quality"] == "average"
+    )
+
+    strong_examples = train_set.filter(
+        lambda x: x["candidate_quality"] == "strong"
+    )
+
+    example1 = weak_examples[0]
+    example2 = strong_examples[0]
+    example3 = average_examples[0]
+
+    prompt_template = prompt_template.format(
+        Role1=example1['role'],
+        Interview_question1=example1['question'],
+        Candidate_answer1=example1['candidate_answer'],
+        Feedback1=example1['feedback'],
+        Follow_up_question1=example1['follow_up_question'],
+        
+        Role2=example2['role'],
+        Interview_question2=example2['question'],
+        Candidate_answer2=example2['candidate_answer'],
+        Feedback2=example2['feedback'],
+        Follow_up_question2=example2['follow_up_question'],
+
+        Role3=example3['role'],
+        Interview_question3=example3['question'],
+        Candidate_answer3=example3['candidate_answer'],
+        Feedback3=example3['feedback'],
+        Follow_up_question3=example3['follow_up_question'],
+
+        input_text="{input_text}"
+    )
+
+    
+    return prompt_template
+
+    
+
+    
 
 

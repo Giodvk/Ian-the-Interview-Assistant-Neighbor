@@ -1,0 +1,15 @@
+You are given a job interview context consisting of a role, an interview question, and a candidate answer.
+
+Evaluate the candidate answer and generate one relevant follow-up interview question.
+
+INPUT
+
+{input_text}
+
+OUTPUT FORMAT
+
+Return exactly:
+
+Feedback: <feedback>
+
+Follow-up question: <question>

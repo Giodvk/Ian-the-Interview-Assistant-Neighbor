@@ -1,8 +1,8 @@
 import argparse
 from pathlib import Path
 
-from utilities import(
-    load_config,
+from utilities_function import(
+    load_configuration,
     load_and_clean_dataset,
     prepare_dataset,
 )
@@ -45,7 +45,7 @@ def get_qlora_target_modules(model):
     return targets
 
 
-def load_student(model_name: str):
+def load_student(model_name: str, is_training: bool = True):
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -55,8 +55,8 @@ def load_student(model_name: str):
     )
 
     processor = AutoProcessor.from_pretrained(
-        model_name
-    )
+                    model_name
+            )
 
     model = AutoModelForMultimodalLM.from_pretrained(
         model_name,
@@ -66,12 +66,16 @@ def load_student(model_name: str):
         torch_dtype=torch.bfloat16,
     )
 
-    # Prepare quantized model for LoRA training
-    model = prepare_model_for_kbit_training(
+    if is_training:
+        model.train()
+        # Prepare quantized model for LoRA training
+        model = prepare_model_for_kbit_training(
         model
-    )
+        )
 
-    model.config.use_cache = False
+        model.config.use_cache = False
+    else:
+        model.eval()
 
     return processor, model
 
@@ -96,7 +100,7 @@ def train(
     config_path: str,
 ):
 
-    config = load_config(config_path)
+    config = load_configuration(config_path)
 
     training_config = config["training"]
     student_config = config["student"]
